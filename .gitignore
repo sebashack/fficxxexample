@@ -3,3 +3,4 @@ cppBindings.cabal
 *~
 Bindings
 working
+cpplib/src/*.o

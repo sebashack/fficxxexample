@@ -38,11 +38,11 @@ genCabal = do
       , cabal_cheaderprefix = "Bindings"
       , cabal_moduleprefix = "Bindings"
       , cabal_additional_c_incs = []
-      , cabal_additional_c_srcs = srcs
+      , cabal_additional_c_srcs = []
       , cabal_license = Just "BSD3"
       , cabal_licensefile = Just "LICENSE"
       , cabal_extraincludedirs = ["/home/sebastian/cppBindings/cpplib/include"]
-      , cabal_extralibdirs = []
+      , cabal_extralibdirs = ["/home/sebastian/cppBindings/cpplib/lib"]
       , cabal_extrafiles = []
       , cabal_additional_pkgdeps = []
       , cabal_pkg_config_depends = []
@@ -102,5 +102,5 @@ genBindings = do
     (ModuleUnitMap $
      HM.singleton (MU_Class "A") (ModuleUnitImports [] [HdrName "A.h"]))
     (cabal, [classA cabal], [], [])
-    []
+    ["MyLib"]
     []
