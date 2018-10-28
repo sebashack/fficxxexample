@@ -2,7 +2,7 @@ module Generator
   ( genBindings
   ) where
 
-import qualified Data.HashMap.Strict as HM (empty)
+import qualified Data.HashMap.Strict as HM (empty, singleton)
 import FFICXX.Generate.Builder (simpleBuilder)
 import FFICXX.Generate.Code.Primitive (cppclass, cppclass_)
 import FFICXX.Generate.Type.Cabal
@@ -20,7 +20,12 @@ import FFICXX.Generate.Type.Class
   , ProtectedMethod(..)
   , Types(..)
   )
-import FFICXX.Generate.Type.Config (ModuleUnitMap(..))
+import FFICXX.Generate.Type.Config
+  ( ModuleUnit(MU_Class, MU_TopLevel)
+  , ModuleUnitImports(..)
+  , ModuleUnitMap(..)
+  )
+import FFICXX.Generate.Type.PackageInterface (HeaderName(..))
 
 genCabal :: IO Cabal
 genCabal = do
@@ -94,7 +99,8 @@ genBindings = do
   cabal <- genCabal
   simpleBuilder
     "Bindings"
-    (ModuleUnitMap HM.empty)
+    (ModuleUnitMap $
+     HM.singleton (MU_Class "A") (ModuleUnitImports [] [HdrName "A.h"]))
     (cabal, [classA cabal], [], [])
     []
     []
