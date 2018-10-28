@@ -8,7 +8,7 @@
 class B : public A
 {
 public:
-    B( std::string const & str );
+    B( std::string const & str, double *arr, unsigned int size );
 
     virtual void foo( void ) override;
 
@@ -16,8 +16,12 @@ public:
 
     void printIt( void );
 
+    void printArr( void );
+
 private:
-    std::string const m_str;
+    std::string m_str;
+    double  *m_array;
+    unsigned int m_size;
 };
 
 #endif

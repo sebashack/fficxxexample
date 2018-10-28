@@ -40,6 +40,8 @@ executables:
     - -with-rtsopts=-N
     dependencies:
     - Bindings
+    - array
+    - carray
 
 tests:
   cppBindings-test:

@@ -98,9 +98,25 @@ method4Binding =
     , func_alias = Just "hsPrintIt"
     }
 
+method5Binding :: Function
+method5Binding =
+  Virtual
+    { func_ret = Void
+    , func_name = "printArr"
+    , func_args = []
+    , func_alias = Just "hsPrintArr"
+    }
+
 classBConstructor :: Function
 classBConstructor =
-  Constructor {func_args = [(CT CTString Const, "str")], func_alias = Nothing}
+  Constructor
+    { func_args =
+        [ (CT CTString Const, "str")
+        , (CT (CPointer CTDouble) NoConst, "arr")
+        , (CT CTUInt NoConst, "size")
+        ]
+    , func_alias = Nothing
+    }
 
 classB :: FilePath -> Class
 classB soDir =
@@ -110,7 +126,8 @@ classB soDir =
     , class_parents = [classA soDir]
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classBConstructor, method3Binding, method4Binding]
+    , class_funcs =
+        [classBConstructor, method3Binding, method4Binding, method5Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
