@@ -8,9 +8,9 @@ class B : public A
 public:
     B();
 
-    virtual void foo(void);
+    virtual void foo(void) override;
 
-    virtual void bar(void);
+    void bar(void);
 };
 
 #endif
