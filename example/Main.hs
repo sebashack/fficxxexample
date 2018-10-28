@@ -5,4 +5,5 @@ import Bindings
 main :: IO ()
 main = do
   a <- newA
-  a_foo a
+  hsFoo a
+  hsFoo2 a 384857378

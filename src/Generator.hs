@@ -52,7 +52,16 @@ classAConstructor = Constructor {func_args = [], func_alias = Nothing}
 method1Binding :: Function
 method1Binding =
   NonVirtual
-    {func_ret = Void, func_name = "foo", func_args = [], func_alias = Nothing}
+    {func_ret = Void, func_name = "foo", func_args = [], func_alias = Just "hsFoo"}
+
+method2Binding :: Function
+method2Binding =
+  Virtual
+    { func_ret = Void
+    , func_name = "foo2"
+    , func_args = [(CT CTLong NoConst, "t")]
+    , func_alias = Just "hsFoo2"
+    }
 
 classA :: FilePath -> Class
 classA  soDir =
@@ -62,22 +71,13 @@ classA  soDir =
     , class_parents = []
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classAConstructor, method1Binding]
+    , class_funcs = [classAConstructor, method1Binding, method2Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
 
 classBConstructor :: Function
 classBConstructor = Constructor {func_args = [], func_alias = Nothing}
-
-method2Binding :: FilePath -> Function
-method2Binding soDir =
-  Virtual
-    { func_ret = cppclass_ $ classA soDir
-    , func_name = "method2"
-    , func_args = [cppclass (classA soDir) "x"]
-    , func_alias = Nothing
-    }
 
 classB :: FilePath -> Class
 classB soDir =
@@ -87,7 +87,7 @@ classB soDir =
     , class_parents = [classA soDir]
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classBConstructor, method2Binding soDir]
+    , class_funcs = [classBConstructor, method2Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
