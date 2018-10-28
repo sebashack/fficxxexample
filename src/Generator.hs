@@ -2,8 +2,7 @@ module Generator
   ( genBindings
   ) where
 
-import qualified Data.HashMap.Strict as HM (empty, singleton)
-import System.Environment ( getEnv )
+import qualified Data.HashMap.Strict as HM (fromList)
 import FFICXX.Generate.Builder (simpleBuilder)
 import FFICXX.Generate.Code.Primitive (cppclass, cppclass_)
 import FFICXX.Generate.Type.Cabal
@@ -27,6 +26,7 @@ import FFICXX.Generate.Type.Config
   , ModuleUnitMap(..)
   )
 import FFICXX.Generate.Type.PackageInterface (HeaderName(..))
+import System.Environment (getEnv)
 
 configCabal :: FilePath -> Cabal
 configCabal soDir =
@@ -51,8 +51,12 @@ classAConstructor = Constructor {func_args = [], func_alias = Nothing}
 
 method1Binding :: Function
 method1Binding =
-  NonVirtual
-    {func_ret = Void, func_name = "foo", func_args = [], func_alias = Just "hsFoo"}
+  Virtual
+    { func_ret = Void
+    , func_name = "foo"
+    , func_args = []
+    , func_alias = Just "hsFoo"
+    }
 
 method2Binding :: Function
 method2Binding =
@@ -64,7 +68,7 @@ method2Binding =
     }
 
 classA :: FilePath -> Class
-classA  soDir =
+classA soDir =
   Class
     { class_cabal = configCabal soDir
     , class_name = "A"
@@ -79,6 +83,15 @@ classA  soDir =
 classBConstructor :: Function
 classBConstructor = Constructor {func_args = [], func_alias = Nothing}
 
+method3Binding :: Function
+method3Binding =
+  NonVirtual
+    { func_ret = Void
+    , func_name = "bar"
+    , func_args = []
+    , func_alias = Just "hsBar"
+    }
+
 classB :: FilePath -> Class
 classB soDir =
   Class
@@ -87,7 +100,7 @@ classB soDir =
     , class_parents = [classA soDir]
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classBConstructor, method2Binding]
+    , class_funcs = [classBConstructor, method3Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
@@ -98,7 +111,10 @@ genBindings = do
   simpleBuilder
     "Bindings"
     (ModuleUnitMap $
-     HM.singleton (MU_Class "A") (ModuleUnitImports [] [HdrName "A.h"]))
-    (configCabal soDir, [classA soDir], [], [])
+     HM.fromList
+       [ (MU_Class "A", ModuleUnitImports [] [HdrName "A.h"])
+       , (MU_Class "B", ModuleUnitImports [] [HdrName "B.h"])
+       ])
+    (configCabal soDir, [classA soDir, classB soDir], [], [])
     ["MyLib"]
     []
