@@ -3,6 +3,7 @@ module Generator
   ) where
 
 import qualified Data.HashMap.Strict as HM (empty, singleton)
+import System.Environment ( getEnv )
 import FFICXX.Generate.Builder (simpleBuilder)
 import FFICXX.Generate.Code.Primitive (cppclass, cppclass_)
 import FFICXX.Generate.Type.Cabal
@@ -27,8 +28,8 @@ import FFICXX.Generate.Type.Config
   )
 import FFICXX.Generate.Type.PackageInterface (HeaderName(..))
 
-configCabal :: Cabal
-configCabal =
+configCabal :: FilePath -> Cabal
+configCabal soDir =
   Cabal
     { cabal_pkgname = CabalName "Bindings"
     , cabal_version = "0.0"
@@ -38,8 +39,8 @@ configCabal =
     , cabal_additional_c_srcs = []
     , cabal_license = Just "BSD3"
     , cabal_licensefile = Just "LICENSE"
-    , cabal_extraincludedirs = ["/home/sebastian/cppBindings/cpplib/include"]
-    , cabal_extralibdirs = ["/home/sebastian/cppBindings/cpplib/lib"]
+    , cabal_extraincludedirs = [soDir ++ "/include"]
+    , cabal_extralibdirs = [soDir ++ "/lib"]
     , cabal_extrafiles = []
     , cabal_additional_pkgdeps = []
     , cabal_pkg_config_depends = []
@@ -53,10 +54,10 @@ method1Binding =
   NonVirtual
     {func_ret = Void, func_name = "foo", func_args = [], func_alias = Nothing}
 
-classA :: Class
-classA =
+classA :: FilePath -> Class
+classA  soDir =
   Class
-    { class_cabal = configCabal
+    { class_cabal = configCabal soDir
     , class_name = "A"
     , class_parents = []
     , class_protected = Protected []
@@ -69,34 +70,35 @@ classA =
 classBConstructor :: Function
 classBConstructor = Constructor {func_args = [], func_alias = Nothing}
 
-method2Binding :: Function
-method2Binding =
+method2Binding :: FilePath -> Function
+method2Binding soDir =
   Virtual
-    { func_ret = cppclass_ $ classA
+    { func_ret = cppclass_ $ classA soDir
     , func_name = "method2"
-    , func_args = [cppclass classA "x"]
+    , func_args = [cppclass (classA soDir) "x"]
     , func_alias = Nothing
     }
 
-classB :: Class
-classB =
+classB :: FilePath -> Class
+classB soDir =
   Class
-    { class_cabal = configCabal
+    { class_cabal = configCabal soDir
     , class_name = "B"
-    , class_parents = [classA]
+    , class_parents = [classA soDir]
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classBConstructor, method2Binding]
+    , class_funcs = [classBConstructor, method2Binding soDir]
     , class_vars = []
     , class_tmpl_funcs = []
     }
 
 genBindings :: IO ()
 genBindings = do
+  soDir <- getEnv "HS_SO_DIR"
   simpleBuilder
     "Bindings"
     (ModuleUnitMap $
      HM.singleton (MU_Class "A") (ModuleUnitImports [] [HdrName "A.h"]))
-    (configCabal, [classA], [], [])
+    (configCabal soDir, [classA soDir], [], [])
     ["MyLib"]
     []
