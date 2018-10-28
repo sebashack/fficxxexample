@@ -20,7 +20,11 @@ public:
 
     double *getArr() const;
 
+    double *getCreatedArr() const;
+
     unsigned int getSize() const;
+
+    unsigned int getCreatedSize() const;
 
 private:
     std::string m_str;

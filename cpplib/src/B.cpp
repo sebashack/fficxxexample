@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include <cstdlib>
 
 #include "B.h"
 
@@ -34,7 +35,27 @@ double *B::getArr() const
     return m_array;
 }
 
+double *B::getCreatedArr() const
+{
+    double * arr;
+    size_t n = 8;
+
+    arr = ( double* ) malloc ( sizeof( double ) * n );
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        arr[i] = 20;
+    }
+
+    return arr;
+}
+
 unsigned int B::getSize() const
 {
     return m_size;
+}
+
+unsigned int B::getCreatedSize() const
+{
+    return 8;
 }

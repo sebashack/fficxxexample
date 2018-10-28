@@ -5,7 +5,8 @@ import Data.Array.CArray (CArray, toForeignPtr, unsafeForeignPtrToCArray)
 import Data.Array.IArray (listArray, elems)
 import Foreign.C.String (CString, newCString)
 import Foreign.C.Types (CDouble)
-import Foreign.ForeignPtr (withForeignPtr, newForeignPtr_)
+import Foreign.ForeignPtr (withForeignPtr, newForeignPtr_, newForeignPtr)
+import Foreign.Marshal.Alloc (finalizerFree)
 
 import Bindings
 
@@ -23,8 +24,18 @@ main = do
   hsBar b
   hsPrintIt b
   hsPrintArr b
+
+  -- Arrays created in haskell are not allowed to use free.
   arraySize <- hsGetSize b
   arrayPtr <- hsGetArr b
   arrayFrPtr <- newForeignPtr_ arrayPtr
   cArray <- unsafeForeignPtrToCArray arrayFrPtr (0, (fromIntegral (arraySize - 1) :: Integer))
   forM_ (elems cArray) print
+
+  -- Example of using free with array created from cpp using malloc
+  mallocArrSize <- hsGetCreatedSize b
+  cMallocArrPtr <- hsGetCreatedArr b
+  mallocArrayFrPtr <- newForeignPtr finalizerFree cMallocArrPtr
+  cMallocArray <- unsafeForeignPtrToCArray mallocArrayFrPtr (0, (fromIntegral (mallocArrSize - 1) :: Integer))
+  forM_ (elems cMallocArray) print
+  return ()

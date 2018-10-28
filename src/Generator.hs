@@ -125,6 +125,24 @@ method7Binding =
     , func_alias = Just "hsGetSize"
     }
 
+method8Binding :: Function
+method8Binding =
+  NonVirtual
+    { func_ret = CT (CPointer CTDouble) NoConst
+    , func_name = "getCreatedArr"
+    , func_args = []
+    , func_alias = Just "hsGetCreatedArr"
+    }
+
+method9Binding :: Function
+method9Binding =
+  NonVirtual
+    { func_ret = CT CTUInt NoConst
+    , func_name = "getCreatedSize"
+    , func_args = []
+    , func_alias = Just "hsGetCreatedSize"
+    }
+
 classBConstructor :: Function
 classBConstructor =
   Constructor
@@ -145,7 +163,15 @@ classB soDir =
     , class_protected = Protected []
     , class_alias = Nothing
     , class_funcs =
-        [classBConstructor, method3Binding, method4Binding, method5Binding, method6Binding, method7Binding]
+        [ classBConstructor
+        , method3Binding
+        , method4Binding
+        , method5Binding
+        , method6Binding
+        , method7Binding
+        , method8Binding
+        , method9Binding
+        ]
     , class_vars = []
     , class_tmpl_funcs = []
     }
