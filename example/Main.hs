@@ -6,7 +6,6 @@ import Data.Array.IArray (listArray, elems)
 import Foreign.C.String (CString, newCString)
 import Foreign.C.Types (CDouble)
 import Foreign.ForeignPtr (withForeignPtr, newForeignPtr_)
-import Foreign.Marshal.Alloc (finalizerFree)
 
 import Bindings
 
