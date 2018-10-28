@@ -4,3 +4,4 @@ cppBindings.cabal
 Bindings
 working
 cpplib/src/*.o
+cpplib/lib/*.so
