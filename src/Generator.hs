@@ -80,9 +80,6 @@ classA soDir =
     , class_tmpl_funcs = []
     }
 
-classBConstructor :: Function
-classBConstructor = Constructor {func_args = [], func_alias = Nothing}
-
 method3Binding :: Function
 method3Binding =
   NonVirtual
@@ -92,6 +89,19 @@ method3Binding =
     , func_alias = Just "hsBar"
     }
 
+method4Binding :: Function
+method4Binding =
+  Virtual
+    { func_ret = Void
+    , func_name = "printIt"
+    , func_args = []
+    , func_alias = Just "hsPrintIt"
+    }
+
+classBConstructor :: Function
+classBConstructor =
+  Constructor {func_args = [(CT CTString Const, "str")], func_alias = Nothing}
+
 classB :: FilePath -> Class
 classB soDir =
   Class
@@ -100,7 +110,7 @@ classB soDir =
     , class_parents = [classA soDir]
     , class_protected = Protected []
     , class_alias = Nothing
-    , class_funcs = [classBConstructor, method3Binding]
+    , class_funcs = [classBConstructor, method3Binding, method4Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
