@@ -18,6 +18,10 @@ public:
 
     void printArr( void );
 
+    double *getArr() const;
+
+    unsigned int getSize() const;
+
 private:
     std::string m_str;
     double  *m_array;

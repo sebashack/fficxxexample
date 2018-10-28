@@ -28,3 +28,13 @@ void B::printArr( void )
         std::cout << m_array[0] << std::endl;
     }
 }
+
+double *B::getArr() const
+{
+    return m_array;
+}
+
+unsigned int B::getSize() const
+{
+    return m_size;
+}

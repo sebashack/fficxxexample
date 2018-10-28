@@ -91,7 +91,7 @@ method3Binding =
 
 method4Binding :: Function
 method4Binding =
-  Virtual
+  NonVirtual
     { func_ret = Void
     , func_name = "printIt"
     , func_args = []
@@ -100,11 +100,29 @@ method4Binding =
 
 method5Binding :: Function
 method5Binding =
-  Virtual
+  NonVirtual
     { func_ret = Void
     , func_name = "printArr"
     , func_args = []
     , func_alias = Just "hsPrintArr"
+    }
+
+method6Binding :: Function
+method6Binding =
+  NonVirtual
+    { func_ret = CT (CPointer CTDouble) NoConst
+    , func_name = "getArr"
+    , func_args = []
+    , func_alias = Just "hsGetArr"
+    }
+
+method7Binding :: Function
+method7Binding =
+  NonVirtual
+    { func_ret = CT CTUInt NoConst
+    , func_name = "getSize"
+    , func_args = []
+    , func_alias = Just "hsGetSize"
     }
 
 classBConstructor :: Function
@@ -127,7 +145,7 @@ classB soDir =
     , class_protected = Protected []
     , class_alias = Nothing
     , class_funcs =
-        [classBConstructor, method3Binding, method4Binding, method5Binding]
+        [classBConstructor, method3Binding, method4Binding, method5Binding, method6Binding, method7Binding]
     , class_vars = []
     , class_tmpl_funcs = []
     }
