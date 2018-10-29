@@ -1,10 +1,10 @@
-export LD_LIBRARY_PATH="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"/cpplib/lib
+#!/bin/bash
+CURRENT_DIR="$( readlink -f "$( dirname "${BASH_SOURCE[0]}" )" )"
+export LD_LIBRARY_PATH="${CURRENT_DIR}/cpplib/lib"
 cd ..
 stack install
 cd exampleBindings
-cd cpplib
-make
-cd ..
+make -C cpplib
 rm -rf Bindings working
 generator
 stack build
