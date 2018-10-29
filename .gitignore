@@ -1,7 +1,7 @@
 .stack-work/
 cppBindings.cabal
 *~
-Bindings
-working
-cpplib/src/*.o
-cpplib/lib/*.so
+exampleBindings/Bindings
+exampleBindings/working
+exampleBindings/cpplib/src/*.o
+exampleBindings/cpplib/lib/*.so
