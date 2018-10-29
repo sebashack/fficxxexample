@@ -1,6 +1,7 @@
 resolver: lts-12.16
 packages:
 - .
+# Reference generated bindings here:
 - ./Bindings
 
 extra-deps:

@@ -24,6 +24,7 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
+    #Once the bindings have been added to the stack.yaml, they can be referenced here
     - Bindings
     - array
     - carray
