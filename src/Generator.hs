@@ -29,7 +29,7 @@ import FFICXX.Generate.Type.PackageInterface (HeaderName(..))
 import System.Environment (getEnv)
 
 configCabal :: FilePath -> Cabal
-configCabal soDir =
+configCabal libPath =
   Cabal
     { cabal_pkgname = CabalName "Bindings"
     , cabal_version = "0.0"
@@ -39,8 +39,8 @@ configCabal soDir =
     , cabal_additional_c_srcs = []
     , cabal_license = Just "BSD3"
     , cabal_licensefile = Just "LICENSE"
-    , cabal_extraincludedirs = [soDir ++ "/include"]
-    , cabal_extralibdirs = [soDir ++ "/lib"]
+    , cabal_extraincludedirs = [take (length libPath - 3) libPath ++ "include"]
+    , cabal_extralibdirs = [libPath]
     , cabal_extrafiles = []
     , cabal_additional_pkgdeps = []
     , cabal_pkg_config_depends = []
@@ -68,9 +68,9 @@ method2Binding =
     }
 
 classA :: FilePath -> Class
-classA soDir =
+classA libPath =
   Class
-    { class_cabal = configCabal soDir
+    { class_cabal = configCabal libPath
     , class_name = "A"
     , class_parents = []
     , class_protected = Protected []
@@ -144,9 +144,9 @@ method9Binding =
     }
 
 method10Binding :: FilePath -> Function
-method10Binding soDir =
+method10Binding libPath =
   NonVirtual
-    { func_ret = CPT (CPTClassCopy $ classB soDir) NoConst
+    { func_ret = CPT (CPTClassCopy $ classB libPath) NoConst
     , func_name = "makeObject"
     , func_args = []
     , func_alias = Just "hsMakeObject"
@@ -164,11 +164,11 @@ classBConstructor =
     }
 
 classB :: FilePath -> Class
-classB soDir =
+classB libPath =
   Class
-    { class_cabal = configCabal soDir
+    { class_cabal = configCabal libPath
     , class_name = "B"
-    , class_parents = [classA soDir]
+    , class_parents = [classA libPath]
     , class_protected = Protected []
     , class_alias = Nothing
     , class_funcs =
@@ -180,7 +180,7 @@ classB soDir =
         , method7Binding
         , method8Binding
         , method9Binding
-        , method10Binding soDir
+        , method10Binding libPath
         ]
     , class_vars = []
     , class_tmpl_funcs = []
@@ -188,7 +188,7 @@ classB soDir =
 
 genBindings :: IO ()
 genBindings = do
-  soDir <- getEnv "HS_SO_DIR"
+  libPath <- getEnv "LD_LIBRARY_PATH"
   simpleBuilder
     "Bindings"
     (ModuleUnitMap $
@@ -196,6 +196,6 @@ genBindings = do
        [ (MU_Class "A", ModuleUnitImports [] [HdrName "A.h"])
        , (MU_Class "B", ModuleUnitImports [] [HdrName "B.h"])
        ])
-    (configCabal soDir, [classA soDir, classB soDir], [], [])
+    (configCabal libPath, [classA libPath, classB libPath], [], [])
     ["MyLib"]
     []
