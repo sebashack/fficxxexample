@@ -143,6 +143,15 @@ method9Binding =
     , func_alias = Just "hsGetCreatedSize"
     }
 
+method10Binding :: FilePath -> Function
+method10Binding soDir =
+  NonVirtual
+    { func_ret = CPT (CPTClassCopy $ classB soDir) NoConst
+    , func_name = "makeObject"
+    , func_args = []
+    , func_alias = Just "hsMakeObject"
+    }
+
 classBConstructor :: Function
 classBConstructor =
   Constructor
@@ -171,6 +180,7 @@ classB soDir =
         , method7Binding
         , method8Binding
         , method9Binding
+        , method10Binding soDir
         ]
     , class_vars = []
     , class_tmpl_funcs = []

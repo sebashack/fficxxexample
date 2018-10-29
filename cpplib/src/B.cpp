@@ -42,7 +42,7 @@ double *B::getCreatedArr() const
 
     arr = ( double* ) malloc ( sizeof( double ) * n );
 
-    for (size_t i = 0; i < n; ++i)
+    for ( size_t i = 0; i < n; ++i )
     {
         arr[i] = 20;
     }
@@ -58,4 +58,21 @@ unsigned int B::getSize() const
 unsigned int B::getCreatedSize() const
 {
     return 8;
+}
+
+B B::makeObject() const
+{
+    double * arr;
+    size_t n = 8;
+
+    arr = ( double* ) malloc ( sizeof( double ) * n );
+
+    for ( size_t i = 0; i < n; ++i )
+    {
+        arr[i] = 30;
+    }
+
+    B b = B( "Nothing surprising", arr, 8);
+
+    return b;
 }

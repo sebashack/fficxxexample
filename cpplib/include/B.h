@@ -26,6 +26,8 @@ public:
 
     unsigned int getCreatedSize() const;
 
+    B makeObject() const;
+
 private:
     std::string m_str;
     double  *m_array;
