@@ -1,8 +1,14 @@
 # exampleBindings
-To generate the bindings and then run the example, run `./genBindings.sh` from this directory.
-This will first install the project in the parent directory, and run it in this directory to generate
-bindings to the code in `cpplib` using the `generate` executable. This generates
-directories called `Bindings` and `working`.
-Then it will run `make` in the `cpplib` directory.
-Finally, it will build the project in this directory and run the example executable,
-which is a Haskell program that uses the generated bindings.
+To generate the bindings run `./genBindings.sh` from this directory.
+
+It will run `make` in the `cpplib` directory, which will generate a `dist` directory with
+the shared object file in `dist/lib` and the header files in `dist/include`.
+
+Then the `generator` executable will be installed, and run in this directory to generate
+bindings to the code from `cpplib`. Directories `Bindings` and `working` are produced.
+
+Finally, the `example` executable is generated in `dist`, which you can run with `./example`.
+
+`dist` is a self-contained distribution, which means that you can ship it wherever you want
+because it contains the necessary shared object and header file dependencies for the executable
+to work.

@@ -9,4 +9,4 @@ $(TARGET): $(objects)
 	mkdir -p ../dist/lib
 	mkdir -p ../dist/include
 	cp -a ./include/* ../dist/include/
-	g++ -std=c++14 $(LDFLAGS) $(objects) -o $@
+	g++ -std=c++14 $(LDFLAGS) $(CPPFLAGS) $(objects) -o $@
